@@ -1,0 +1,9 @@
+{
+  "name": "backend",
+  "version": "0.0.0",
+  "dependencies": {
+    "gift": "~0.1.1",
+    "underscore": "~1.5.2",
+    "express": "~3.4.7"
+  }
+}

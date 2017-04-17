@@ -1,0 +1,8 @@
+{
+  "name": "frontend",
+  "dependencies": {
+    "jquery": "~1.9",
+    "highcharts": "~3.0",
+    "underscore": "~1.6.0"
+  }
+}

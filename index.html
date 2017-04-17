@@ -1,0 +1,189 @@
+<html>
+    <head>
+        <title>Chapter 11 - System Integration - Examples</title>
+
+        <style type='text/css'>
+            .example-container {
+                border: 1px solid #000;
+                padding: 20px;
+                float: left;
+                margin: 10px;
+                min-width: 500px;
+                min-height: 300px;
+            }
+
+            .example {
+                width: 500px;
+                height: 300px;
+                float: left;
+            }
+
+            .relative {
+                position: relative;
+            }
+
+            .example + .example {
+                margin-left: 60px;
+            }
+
+            label {
+                width: 100px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div>
+          <select id="group">
+            <option value="">เลือก</option>
+            <option value="1">กลุ่มที่ 1</option>
+            <option value="2">กลุ่มที่ 2</option>
+            <option value="3">กลุ่มที่ 3</option>
+            <option value="4">กลุ่มที่ 4</option>
+            <option value="5">กลุ่มที่ 5</option>
+            <option value="6">กลุ่มที่ 6</option>
+            <option value="7">กลุ่มที่ 7</option>
+            <option value="8">กลุ่มที่ 8</option>
+          </select>
+        </div>
+
+        <div class='example-container'>
+            <div class='example' id='example4'></div>
+        </div>
+
+        <div class='example-container'>
+            <div class='example' id='example5'></div>
+        </div>
+
+        <div class='example-container'>
+            <div class='example' id='example7'></div>
+        </div>
+
+        <div class='example-container'>
+            <div class='example' id='example6'></div>
+        </div>
+
+        <!-- Include the verbose version of jQuery -->
+        <script src='./bower_components/jquery/jquery.js'></script>
+
+        <!-- Include the verbose version of highcharts -->
+        <script src='./bower_components/highcharts/highcharts.src.js'></script>
+
+        <!-- Include the verbose version of highcharts extras -->
+        <script src='./bower_components/highcharts/highcharts-more.src.js'></script>
+
+        <!-- Include Underscore -->
+        <script src='./bower_components/underscore/underscore.js'></script>
+
+        <!-- Include our scripts -->
+        <script type='text/javascript'>
+            // Execute this function as soon as jQuery is ready
+            $(document).ready(function() {
+
+              $('#group').change(function() {
+                  // $(this).val() will work here
+                  // --- Show Git commits by contributor ---
+                  var id = $(this).val();
+                  $.getJSON('/git/users/' + id, function(data) {
+                      var chart4Options = {
+                          chart: {
+                            type: 'pie'
+                          },
+                          title: {
+                              text: 'แสดงตามจำนวนการ commit ของ code'
+                          },
+                          plotOptions: {
+                              pie: {
+                                  allowPointSelect: true,
+                                  cursor: 'pointer',
+                                  dataLabels: {
+                                      enabled: true
+                                  },
+                                  showInLegend: false
+                              }
+                          },
+                          series: [{
+                              name: 'Commits',
+                              data: data
+                          }]
+                      };
+                      $('#example4').highcharts(chart4Options);
+                  });
+
+                  $.getJSON('/git/wiki/' + id, function(data) {
+                      var chart4Options = {
+                          chart: {
+                              type: 'pie'
+                          },
+                          title: {
+                              text: 'แสดงตามจำนวนการ commit ใน Wiki'
+                          },
+                          plotOptions: {
+                              pie: {
+                                  allowPointSelect: true,
+                                  cursor: 'pointer',
+                                  dataLabels: {
+                                      enabled: true
+                                  },
+                                  showInLegend: false
+                              }
+                          },
+                          series: [{
+                              name: 'Commits',
+                              data: data
+                          }]
+                      };
+                      $('#example5').highcharts(chart4Options);
+                  });
+
+                  $.getJSON('/git/all/' + id, function(data) {
+                      var chart4Options = {
+                          chart: {
+                              type: 'pie'
+                          },
+                          title: {
+                              text: 'แสดงตามจำนวนการ commit ใน Wiki และ code'
+                          },
+                          plotOptions: {
+                              pie: {
+                                  allowPointSelect: true,
+                                  cursor: 'pointer',
+                                  dataLabels: {
+                                      enabled: true
+                                  },
+                                  showInLegend: false
+                              }
+                          },
+                          series: [{
+                              name: 'Commits',
+                              data: data
+                          }]
+                      };
+                      $('#example7').highcharts(chart4Options);
+                  });
+
+                  // --- Show Git commits over time ---
+                  $.getJSON('/git/timeline/' + id, function(data) {
+                      var chart5Options = {
+                          chart: {
+                              type: 'spline'
+                          },
+                          title: {
+                              text: 'Show Git commits over time'
+                          },
+                          xAxis: {
+                              type: 'datetime'
+                          },
+                          series: [{
+                              name: 'Commits',
+                              data: data
+                          }]
+                      };
+                      $('#example6').highcharts(chart5Options);
+                  });
+              });
+            });
+        </script>
+    </body>
+</html>
